@@ -95,11 +95,17 @@
 	\vspace{0.5em}
 
 	\begin{enumerate}
-		\item \textbf{Optimal Sets}: we have an exact \good{polyhedral characterization} and simple criteria for \good{uniqueness} (general position) \citep{tibshirani2013unique}.\pause
+        \item \textbf{Optimal Sets}: we have an exact \good{polyhedral
+            characterization} and simple criteria for \good{uniqueness}
+            (general position) \citep{tibshirani2013unique}.\pause
 
-		\item \textbf{Regularization Paths}: the (min-norm) solution path is \good{continuous} and \good{piece-wise linear} \citep{osborne2000new}.
+        \item \textbf{Regularization Paths}: we know the (min-norm) solution
+            path is \good{continuous} and \good{piece-wise linear}
+            \citep{osborne2000new}.
 
-		\item \textbf{Algorithms}: we have efficient algorithms for \good{homotopy} \citep{efron2004least} and computing \good{minimal solutions} \citep{tibshirani2013unique}.
+        \item \textbf{Algorithms}: we have efficient algorithms for
+            \good{homotopy} \citep{efron2004least} and computing \good{minimal
+            solutions} \citep{tibshirani2013unique}.
 	\end{enumerate}
 
 \end{frame}
@@ -244,9 +250,13 @@
 	\begin{itemize}
 		\item The global minima have the same values: \( p^* = q^* \)
 		      \vspace{0.5em}
-		\item We can map a solution \( u^* \) for one problem into a solution
-		      \( v^* \) for the other.
+		\item We can map every global minimum \( u^* \) for one problem into
+		      a global minimum \( v^* \) of the other.
 		      \vspace{0.5em}
+
+		      \begin{itemize}
+			      \item We call this the \good{solution mapping}.
+		      \end{itemize}
 	\end{itemize}
 
 \end{frame}
@@ -254,7 +264,7 @@
 
 \begin{frame}{Convex Reformulations: Two-Layer ReLU Networks}
 
-	{\large \bad{Non-Convex Problem}}
+	{\large \bad{Non-Convex Problem} (NC-ReLU)}
 	\[
 		\min_{W_1, w_2} \underbrace{\half \norm{\sum_{j=1}^m (X W_{1j})_+ w_{2j} - y}_2^2}_{\text{Squared Error}}
 		+ \underbrace{\lambda \sum_{j=1}^m \norm{W_{1j}}_2^2 + |w_{2j}|^2}_{\text{Weight Decay}},
@@ -334,7 +344,7 @@
 
 \begin{frame}{Convex Reformulations: Convex Problem}
 
-	{\large \good{Convex Reformulation}} \citep{pilanci2020convex}
+	{\large \good{Convex Reformulation} (C-ReLU)} \citep{pilanci2020convex}
 	\[
 		\begin{aligned}
 			\min_{v, w} & \half \norm{\sum_{j=1}^p D_j X (v_j - w_j) - y}_2^2 +
@@ -409,593 +419,499 @@
 \end{frame}
 \setbeamercolor{background canvas}{bg=white}
 
-%\begin{frame}{Convex Reformulations: Gated ReLU Networks}
-%    Can we simplify the convex reformulation?
-
-%    \[
-%        \begin{aligned}
-%            \textbf{C-ReLU}: \min_{u} & \norm{\sum_{j=1}^p D_j X (v_j - w_j) - y}_2^2 +
-%            \lambda \sum_{j=1}^p \norm{v_j}_2 + \norm{w_j}_2                            \\
-%                                      & \hspace{0.2em} \bad{\text{s.t. }
-%                v_j, w_j \in \calK_j := \cbr{w : (2D_j - I) X w \geq 0},}
-%        \end{aligned}
-%    \]
-
-%    \pause
-%    \horizontalrule
-
-%    \textbf{Relaxation}: drop the cone constraints and simplify to obtain,
-%    \[
-%        \begin{aligned}
-%            \textbf{C-GReLU}: \min_{u} & \norm{\sum_{j=1}^p D_j X u_j - y}_2^2 +
-%            \lambda \sum_{j=1}^p \norm{u_j}_2                                    \\
-%        \end{aligned}
-%    \]
-
-%    \pause
-%    \bad{What does it mean? Is it still a neural network?}
-%\end{frame}
-
-
-%\begin{frame}{Convex Reformulations: Gated ReLU Networks}
-
-%    \begin{beamercolorbox}[wd=\textwidth,sep=1em]{result}
-%        \textbf{Theorem 2.2} (informal): C-GReLU is equivalent to
-%        a neural network with a ``Gated ReLU'' \citep{fiat2019decoupling} activation function
-%        \[ \phi_{g}(X, u) = \text{diag}(\mathbbm{1}(Xg \geq 0)) X u. \]
-%    \end{beamercolorbox}
-
-%    \pause
-%    \vspace{2ex}
-
-%    \textbf{Interpretation}:
-%    \begin{itemize}
-%        \item C-GReLU relaxation doesn't enforce \( u_j \not \in \calK_j \).
-%        \item Corresponding non-convex problem must also decouple the activation
-%              from the linear mapping.
-%    \end{itemize}
-%\end{frame}
-
-%\begin{frame}{Cone Decompositions: Gated ReLU Networks }
-
-%    \begin{center}
-%        \textbf{Question}: when are Gated ReLU and ReLU networks equivalent?
-%    \end{center}
-
-%    \pause
-%    \horizontalrule
-
-%    Consider special case where \( \lambda = 0 \).
-
-%    \[
-%        \textbf{C-GReLU}: \min_{u} \norm{\sum_{j=1}^p D_j X u_j - y}_2^2. \hspace{11em}
-%    \]
-%    \vspace{-1em}
-%    \pause
-
-%    \begin{center}
-%        \Large \bad{V.S.}
-%    \end{center}
-
-%    \vspace{-2em}
-%    \[
-%        \begin{aligned}
-%            \textbf{C-ReLU}: \min_{u} & \norm{\sum_{j=1}^p D_j X (v_j - w_j) - y}_2^2. \\
-%                                      & \hspace{0.2em} \text{s.t. }
-%            v_j, w_j \in \calK_j := \cbr{w : (2D_j - I) X w \geq 0},
-%        \end{aligned}
-%    \]
-
-%\end{frame}
-
-%\begin{frame}{Cone Decompositions: Equivalent Statement}
-
-%    \bad{Equivalent Question}: given \( u_j \), when do we
-%    have that
-%    \[
-%        \exists v_j, w_j \in \calK_j, \quad \text{s.t.} \quad u_j = v_j - w_j.
-%    \]
-
-%    \pause
-%    \vspace{1em}
-
-%    \good{Answer}: when \( \calK_j - \calK_j = \R^d \) and a ``cone decomposition'' exists.
-%    \pause
-
-%    \begin{figure}[]
-%        \centering
-%        \ifdefined\showtikz
-%            \input{assets/cone_decomp}
-%        \else
-%            \Huge cone decomp figure
-%        \fi
-%    \end{figure}
-
-%\end{frame}
-%\begin{frame}{Cone Decomposition: Basic Result}
-
-%    \begin{beamercolorbox}[wd=\textwidth,sep=1em]{result}
-%        \textbf{Proposition 3.1} (informal): If \( X \) is full row-rank,
-%        then \( \text{aff}(\calK_j) = \R^d \) and
-%        \( \calK_j - \calK_j = \R^d \).
-%    \end{beamercolorbox}
-
-%    \vspace{1em}
-
-%    \pause
-%    \begin{itemize}
-%        \item Unfortunately, there is \bad{no extension} to full-rank \( X \).
-%    \end{itemize}
-
-%\end{frame}
-
-%\begin{frame}{Cone Decompositions: Not All Cones are Equal}
-
-%    \textbf{Alternative Idea}: show we don't need ``singular'' cones \( \calK_j \),
-%    \[
-%        \calK_j - \calK_j \subsetneq \R^d.
-%    \]
-
-%    \vspace{1em}
-%    \pause
-
-%    \begin{beamercolorbox}[wd=\textwidth,sep=1em]{result}
-%        \textbf{Proposition 3.2} (informal): Suppose \( \calK_j - \calK_j \subset \R^d \).
-%        Then, there exists \( \calK_i \) for which \( \calK_i - \calK_i = \R^d \)
-%        and \( \calK_j \subset \calK_i \).
-%    \end{beamercolorbox}
-
-%    \pause
-%    \vspace{1em}
-
-%    \textbf{Interpretation}: if optimal \( u^*_j \neq 0 \), then set
-%    \[
-%        u_i' = u_j^* + u_i^*.
-%    \]
-%    It is possible to show this causes no problems.
-
-%\end{frame}
-
-%\begin{frame}{Cone Decomposition: Main Result}
-%    \begin{itemize}
-%        \item The proof is works by iteratively constructing a cone \( \calK_i \).
-%              \vspace{0.2em}
-%              \begin{itemize}
-%                  \item Build \( \calK_i \) by flipping entries of \( D_j \).
-%                        \vspace{0.2em}
-%                  \item Equivalent to turning on/off activations.
-%              \end{itemize}
-%              \vspace{0.4em}
-
-%        \item Leads to our main approximation result.
-%    \end{itemize}
-
-%    \pause
-%    \horizontalrule
-
-%    \begin{beamercolorbox}[wd=\textwidth,sep=1em]{result}
-%        \textbf{Theorem 3.7} (informal):
-%        Let \( \lambda \geq 0 \) and let \( p^* \) be the optimal value of the ReLU problem.
-%        There exists a C-GReLU problem with minimizer \( u^* \) and optimal value \( d^* \) satisfying,
-%        \[
-%            d^* \leq p^* \leq d^* + \bad{2 \lambda \kappa(\tilde X_{\calJ}) \sum_{D_i \in \tilde \calD} \norm{u_i^*}_2}.
-%        \]
-%    \end{beamercolorbox}
-
-%\end{frame}
-
-%\begin{frame}{Cone Decompositions: Big Picture}
-%    \begin{figure}[]
-%        \centering
-%        \ifdefined\showtikz
-%            \input{assets/relations}
-%        \else
-%            \Huge Relations Figure
-%        \fi
-%    \end{figure}
-%    \pause
-
-%    \textbf{Takeaways}:
-
-%    \vspace{0.5em}
-%    \begin{itemize}
-%        \item Gated ReLU and ReLU model classes are the same.
-%        \item We can convert between them at will.
-%    \end{itemize}
-%\end{frame}
-
-%\setbeamercolor{background canvas}{bg=LightCyan}
-
-%\begin{frame}{}
-%    \begin{center}
-%        \huge IV. Solution Sets
-%    \end{center}
-%\end{frame}
-%\setbeamercolor{background canvas}{bg=white}
-
-%\begin{frame}{Model Problem: Constrained Group Lasso}
-
-%    {
-%        \large
-%        \textbf{General Approach}:
-%        \begin{enumerate}
-%            \large
-%            \item \pause
-%                  Characterize solutions to the \good{convex reformulation}
-%                  using strong duality and KKT conditions.
-%                  \vspace{1ex}
-%                  \pause
-%            \item Extend results to \bad{non-convex} ReLU networks
-%                  using the solution mapping.
-%                  \vspace{1ex}
-%                  \pause
-%            \item Leverage explicit characterization of the optimal
-%                  set for \good{new insights and algorithms}.
-%        \end{enumerate}
-%    }
-
-
-%\end{frame}
-
-%\begin{frame}{C-ReLU Optimal Set}
-
-%    {\raggedright
-%        1. Characterize solutions to the \good{convex reformulation}
-%        using strong duality and KKT conditions.
-%        \vspace{3ex}
-%        \pause
-%    }
-
-%    \textbf{C-ReLU Solution Set}:
-%    \[
-%        \begin{aligned}
-%            \solfn(\lambda) & =
-%            \argmin_{v_i, w_i \in \calK_i} \, \bigg\{
-%            \half \bigg\|\sum_{D_i \in \tilde \calD} D_i X (v_i - w_i), y\bigg\|_2^2                    \\
-%                            & \quad \quad + \lambda\sum_{D_i \in \tilde \calD}\norm{v_i}_2+\norm{w_i}_2
-%            \bigg\}.
-%        \end{aligned}
-%    \]
-
-%    \pause
-%    \horizontalrule
-
-%    \begin{itemize}
-%        \item Introduce dual variables \( \rho \) and analyze the KKT conditions.
-%              \pause
-%        \item Define
-%              \(
-%              \theta =
-%              \begin{bmatrix}
-%                  v_i \\
-%                  -w_i
-%              \end{bmatrix}.
-%              \)
-
-%        \item Index \( D_i's \) from \( 1 \) to \( 2p \).
-%    \end{itemize}
-
-%\end{frame}
-
-
-%\begin{frame}{C-ReLU: the Optimal Set}
-%    \vspace{-2ex}
-%    \begin{itemize}
-%        \item
-%              \textbf{Optimal Fit: }       \( \hat y = \sum_{i=1}^{2p} D_i X \theta_i  \).
-%              \pause
-%              \vspace{1ex}
-
-%        \item
-%              \textbf{Block Correlation: } \( q_i = X^\top D_i (\hat y - y) - (2D_i - I)^\top \ri \).
-%              \pause
-%              \vspace{1ex}
-
-%        \item
-%              \textbf{Support Set: }      \( \calS_\lambda
-%              = \cbr{\bi \in [2p] : \exists \theta \in \solfn(\lambda), \
-%                  \theta_i \neq 0} \).
-%    \end{itemize}
-
-%    \vspace{-2ex}
-%    \pause
-%    \horizontalrule
-%    \vspace{-1ex}
-
-%    \begin{proposition}[Informal]
-%        Fix \( \lambda > 0 \).
-%        The optimal set of the C-ReLU problem is
-%        given by
-%        \begin{equation*}
-%            \begin{aligned}
-%                \solfn(\lambda) =
-%                \big\{ & \theta  :
-%                \forall \, \bi  \in  \calS_\lambda,
-%                \theta_i =  \alpha_\bi q_i, \alpha_\bi \geq 0, \,             \\
-%                       & \quad \forall \, j \in [2p] \setminus \calS_\lambda,
-%                \theta_{j} = 0, \, \sum_{i=1}^{2p} D_i X \theta_i = \hat y
-%                \big\}
-%            \end{aligned}
-%        \end{equation*}
-%    \end{proposition}
-
-%\end{frame}
-
-%\begin{frame}{C-ReLU: Mapping back to Non-Convex Networks}
-
-%    {\raggedright
-%        2. Extend results to \bad{non-convex} ReLU networks
-%        using the solution mapping.
-%        \vspace{3ex}
-%        \pause
-%    }
-
-
-%    \begin{corollary}[Informal]
-%        Suppose \( m \geq m^* \).
-%        Then the optimal set for the ReLU problem is
-%        \vspace{-1ex}
-%        \begin{equation*}
-%            \begin{aligned}
-%                \hspace{-0.5em} \calO_\lambda  = \,
-%                \big\{
-%                 & (W_1,  w_2) :
-%                \, f_{W_1, w_2}(X)  =  \hat y,                       \\
-%                 & \forall \, \bi  \in  \calS_\lambda,
-%                W_{1i} = (\sfrac{\alpha_{i}}{\lambda})^{\sfrac{1}{2}} q_i,
-%                w_{2i} = (\alpha_i \lambda)^{\sfrac{1}{2}},
-%                \alpha_i \geq 0                                      \\
-%                 & \forall \, \bi  \in [2p] \setminus \calS_\lambda,
-%                W_{1i} = 0, \, w_{2i} = 0
-%                \big\}.
-%            \end{aligned}
-%        \end{equation*}
-%    \end{corollary}
-
-%    \pause
-
-%    We've derived the optimal set of the ReLU training problem!
-
-%\end{frame}
-
-%\begin{frame}{C-ReLU: Appearance of Solution Sets}
-%    \begin{figure}[]
-%        \centering
-%        \includegraphics[width=0.96\textwidth]{assets/solution_sets_vis_270.png}
-%    \end{figure}
-
-%    \begin{itemize}
-%        \item Non-convex parameterization maps polytope into curved
-%              manifold.
-%    \end{itemize}
-
-
-%\end{frame}
-
-
-%\begin{frame}{Optimal Pruning: Extreme Points}
-
-%    {\raggedright
-%        3. Leverage explicit characterization of the optimal
-%        set for \good{new insights and algorithms}.
-%        \vspace{3ex}
-%        \pause
-%    }
-
-%    C-ReLU Optimal Set in \( \alpha \) space:
-%    \begin{equation}
-%        \begin{aligned}
-%            \solfn(\lambda) & =
-%            Q_{\calS_\lambda} \big\{ \alpha  : \sum_{i \in \calS_\lambda} (D_i X q_i) \alpha_i = \hat y,
-%            \alpha_i \geq 0
-%            \big\}                                                       \\
-%                            & = Q_{\calS_\lambda} \calP_{\calS_\lambda}.
-%        \end{aligned}
-%    \end{equation}
-
-%    \pause
-%    \horizontalrule
-
-%    \( \calP_{\calS_\lambda} \) is a polytope.
-%    \pause
-%    \begin{itemize}
-%        \item \( \bar \alpha \in \calP_{\calS_\lambda} \) is a vertex
-%              iff \( \cbr{D_i X q_i}_{\bar \alpha_i \neq 0} \) are linearly independent.
-%              \pause
-%        \item Are these vertices special somehow?
-%    \end{itemize}
-
-%\end{frame}
-
-%\begin{frame}{Optimal Pruning: Algorithm}
-%    \textbf{Definition}: A optimal C-ReLU model \( \theta \) is minimal
-%    if there does
-%    not exist another optimal model \( \theta' \) with strictly smaller support.
-
-%    \vspace{3ex}
-%    \pause
-
-%    \begin{beamercolorbox}[wd=\textwidth,sep=1em]{result}
-%        \textbf{Proposition 3.2} (informal):
-%        For \( \lambda > 0 \), \( \theta \in \solfn(\lambda) \) is \good{minimal}
-%        iff
-%        the vectors \( \cbr{D_i X q_i}_{\alpha_i \neq 0} \)
-%        are linearly independent.
-%    \end{beamercolorbox}
-
-%    \vspace{3ex}
-%    \pause
-
-%    \textbf{We prove}:
-%    \begin{itemize}
-%        \item Vertices of \( \solfn(\lambda) \) are minimal models.
-%              \pause
-%        \item All minimal models have the \good{same number} of active neurons.
-%              \pause
-%        \item There are at most \( n \) neurons in a minimal model.
-%              \pause
-%        \item Pruning from any optimal model will give a minimal model.
-%    \end{itemize}
-
-%\end{frame}
-
-%\begin{frame}{Optimal Pruning: Pseudo-code}
-%    \begin{algorithm}[H]
-%        \caption{Pruning solutions}
-%        \begin{algorithmic}
-%            \STATE {\bfseries Input:} data matrix \( X \), solution \( \theta \).
-%            \STATE \( k \gets 0 \).
-%            \STATE \( \theta^k \gets \theta \).
-%            \WHILE {\( \exists \beta \neq 0 \) s.t. \( \sum_{\bi \in \act(\theta^k)} \beta_\bi D_i X \theta_i^k = 0 \)}
-%            \STATE \( \bi^k \gets \argmax_{\bi} \cbr{|\beta_\bi| : \bi \in \act(\theta^k)}  \)
-%            \STATE \( t^k \gets 1/|\beta_{\bi^k}| \)
-%            \STATE \( \theta^{k+1} \gets \theta^k (1 - t^k \beta_\bi) \)
-%            \STATE \( k \gets k + 1 \)
-%            \ENDWHILE
-%            \STATE {\bfseries Output:} final weights \( \theta^k \)
-%        \end{algorithmic}
-%    \end{algorithm}
-
-%    \pause
-
-%    Let \( r = \text{rank}(X) \). Complexity to compute a minimal model:
-
-%    \[ O\rbr{d^3 r^3 (\frac{n}{r})^{3r} + \good{(n^3 + nd) r (\frac{n}{r})^r}}. \]
-
-%\end{frame}
-
-%\setbeamercolor{background canvas}{bg=LightCyan}
-
-%\begin{frame}{}
-%    \begin{center}
-%        \huge V. Experimental Results
-%    \end{center}
-%\end{frame}
-%\setbeamercolor{background canvas}{bg=white}
-
-%\begin{frame}{Algorithms: Solving the Convex Programs}
-%    We develop two algorithms for solving the convex reformulations:
-
-%    \vspace{1em}
-
-%    \begin{itemize}
-%        \item \textbf{R-FISTA}: a restarted FISTA variant for Gated ReLU.
-%              \vspace{0.5em}
-%        \item \textbf{AL}: an augmented Lagrangian method for the (constrained) ReLU Problem.
-%    \end{itemize}
-
-%    \pause
-%    \horizontalrule
-
-%    And we can use all the convex tricks!
-%    \vspace{1em}
-%    \begin{itemize}
-%        \item \textbf{Fast}: \( O(1/T^2) \) convergence rate.
-%              \vspace{0.5em}
-
-%        \item \textbf{Tuning-free}: line-search, restarts, data normalization, \ldots
-%              \vspace{0.5em}
-
-%        \item \textbf{Certificates}: termination based on min-norm subgradient.
-%    \end{itemize}
-
-%\end{frame}
-
-%\begin{frame}{Algorithms: Optimization Performance}
-%    \begin{figure}[t]
-%        \centering
-%        \includegraphics[width=1\linewidth]{assets/pp_main.pdf}
-%    \end{figure}
-%    \begin{itemize}
-%        \item Generated by 438 training problems taken from UCI repo.
-%        \item R-FISTA/AL solve more, faster, than SGD and Adam.
-%    \end{itemize}
-%\end{frame}
-
-%\begin{frame}{Algorithms: Exploring the Optimal Set}
-
-%    \begin{figure}[t]
-%        \centering
-%        \includegraphics[width=0.48\linewidth]{assets/dist_paper_monks-1.pdf}
-%        \includegraphics[width=0.48\linewidth]{assets/dist_paper_planning.pdf}
-%    \end{figure}
-%    \begin{itemize}
-%        \item Take 10,000 samples from the set of optimal neural networks.
-%        \item All samples have (i) \textbf{same training accuracy},
-%              (ii)~\textbf{same model norm}, but generalize very differently.
-%    \end{itemize}
-%\end{frame}
-
-%\begin{frame}{Algorithms: (Sub)-Optimal Pruning}
-%    \begin{figure}[t]
-%        \centering
-%        \includegraphics[width=0.75\textwidth]{assets/uci_pruning_full_paper.pdf}
-%    \end{figure}
-%\end{frame}
-
-%\begin{frame}{Algorithms: (Sub)-Optimal Pruning}
-%    \begin{figure}[t]
-%        \centering
-%        \includegraphics[width=0.75\textwidth]{assets/prune_cifar.pdf}
-%    \end{figure}
-%\end{frame}
-
-%\setbeamercolor{background canvas}{bg=LightCyan}
-
-%\begin{frame}{}
-%    \begin{center}
-%        \huge Pause.
-%    \end{center}
-%\end{frame}
-%\setbeamercolor{background canvas}{bg=white}
-
-%\begin{frame}{Recap}
-%    \begin{center}
-%        \huge   Our Contributions.
-%    \end{center}
-
-%    \vspace{2em}
-%    \pause
-%    { \large
-%        \begin{itemize}
-%            \item We approximate the ReLU training problem by \textbf{unconstrained}
-%                  convex optimization of a Gated ReLU network.\pause
-%                  \vspace{0.5em}
-
-%            \item We leverage convex reformulations to \textbf{analyze} the set
-%                  of optimal ReLU networks.
-%                  \pause
-%                  \vspace{0.5em}
-
-%            \item We propose and \textbf{exhaustively evaluate} algorithms for solving
-%                  convex reformulations.
-%        \end{itemize}
-%    }
-
-%\end{frame}
-
-
-%%% main content ends %%
-
-%%% end slide
-%\setbeamercolor{background canvas}{bg=LightCyan}
-
-%\begin{frame}{}
-%    \begin{center}
-%        \huge Try our Code!
-%    \end{center}
-
-%    \begin{figure}[]
-%        \centering
-%        \includegraphics[width=0.6\textwidth]{assets/github.png}
-%    \end{figure}
-%\end{frame}
-%\setbeamercolor{background canvas}{bg=white}
-
-%%% bibliography
-%\begin{frame}[allowframebreaks]{References}
-%    \printbibliography[]
-%\end{frame}
+\begin{frame}{Proof Roadmap}
+
+	{
+		\large
+		{\Large
+			\textbf{Proof Roadmap}:
+		}
+		\vspace{2em}
+		\begin{enumerate}
+			\large
+			\item \pause
+			      Characterize solutions to the \good{convex reformulation}
+			      using strong duality and KKT conditions.
+			      \vspace{1ex}
+			      \pause
+			\item Extend results to \bad{non-convex} ReLU networks
+			      using the solution mapping.
+			      \vspace{1ex}
+			      \pause
+			\item Leverage explicit characterization of the optimal
+			      set for \good{new insights and algorithms}.
+		\end{enumerate}
+	}
+
+
+\end{frame}
+
+\begin{frame}{Proof Roadmap}
+
+	{
+		\large
+		{\Large
+			\textbf{Proof Roadmap}:
+		}
+		\vspace{2em}
+		\begin{enumerate}
+			\large
+			\item \textbf{Characterize solutions to the \good{convex reformulation}
+				      using strong duality and KKT conditions.}
+			      \vspace{1ex}
+			\item Extend results to \bad{non-convex} ReLU networks
+			      using the solution mapping.
+			      \vspace{1ex}
+			\item Leverage explicit characterization of the optimal
+			      set for \good{new insights and algorithms}.
+		\end{enumerate}
+	}
+
+\end{frame}
+
+\begin{frame}{C-ReLU Optimal Set}
+
+	{\raggedright
+		\large
+		1. Characterize solutions to the \good{convex reformulation}
+		using strong duality and KKT conditions.
+		\vspace{3ex}
+		\pause
+	}
+
+	\horizontalrule
+
+	\textbf{C-ReLU Solution Set}:
+	\[
+		\begin{aligned}
+			\solfn(\lambda) & =
+			\argmin_{v_i, w_i \in \calK_i} \, \bigg\{
+			\half \bigg\|\sum_{D_i \in \tilde \calD} D_i X (v_i - w_i), y\bigg\|_2^2                    \\
+			                & \quad \quad + \lambda\sum_{D_i \in \tilde \calD}\norm{v_i}_2+\norm{w_i}_2
+			\bigg\}.
+		\end{aligned}
+	\]
+
+	\pause
+
+	\begin{itemize}
+		\item Convex objective + linear constraints \( \implies \) strong duality!
+		      \pause
+		\item Introduce dual variables \( \rho \) and analyze the KKT conditions.
+		      \pause
+		\item Define
+		      \(
+		      \theta =
+		      \begin{bmatrix}
+			      v_i \\
+			      -w_i
+		      \end{bmatrix}
+		      \)
+		      and index \( D_i \)'s from \( 1 \) to \( 2p \).
+
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{C-ReLU Optimality Conditions}
+
+	We form the Lagrangian for the convex reformulation:
+
+	\begin{equation*}
+		\begin{aligned}
+			\calL(\theta, \rho)
+			 & = \half \norm{\sum_{i=1}^{2p} D_i X \theta_i - y}_2^2
+			+ \lambda\sum_{i=1}^{2p}\norm{\theta_i}_2
+			- \sum_{i=1}^{2p} \abr{K_i^\top \rho, \theta_i},
+		\end{aligned}
+	\end{equation*}
+	where \( K_{i} = (2D_i - I) X \).
+
+	\pause
+	\horizontalrule
+
+	The \good{KKT conditions} are necessary and sufficient for optimality:\pause
+
+	\vspace{1ex}
+	\begin{itemize}
+		\item Define the \textbf{optimal model fit}: \( \hat y = \sum_{i=1}^{2p} D_i X \theta_i  \).
+		\item Stationary Lagrangian:
+		      \[
+			      \underbrace{X^\top D_i (\hat y - y) + K_i^\top \ri}_{q_i}
+			      \in \partial \lambda \norm{\theta_i}_2.
+		      \]
+		      \pause
+		      \vspace{-1em}
+		      \begin{itemize}
+			      \normalsize
+			      \item It turns out each \( q_i \) is \textbf{unique} WLOG!
+		      \end{itemize}
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Characterizing the Optimal Set}
+
+	\textbf{Stationary Lagrangian}:
+	\[
+		X^\top D_i (\hat y - y) + K_i^\top \ri =: q_i
+		\in \partial \lambda \norm{\theta_i}_2.
+	\]
+
+	\pause
+	\horizontalrule
+
+	\textbf{Non-zero Blocks}:
+	\begin{itemize}
+		\item Suppose \( \theta_i \neq 0 \).
+		      \pause
+		\item Then \( \partial \lambda \norm{\theta_i}_2 =
+		      = \cbr{\lambda \theta_i / \norm{\theta_i}_2} \).
+		      \pause
+		\item Rearranging stationarity implies \( \exists \alpha_\bi > 0 \):
+		      \[
+			      \theta_i = \good{\alpha_\bi} q_i.
+		      \]
+		      \pause
+		      \vspace{-1em}
+		\item Every solution is a multiple of these
+		      (unique) \( q_i \) vectors.
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{C-ReLU: the Optimal Set}
+	\vspace{-2ex}
+	\begin{itemize}
+		\item
+		      \textbf{Optimal Fit: }       \( \hat y = \sum_{i=1}^{2p} D_i X \theta_i  \).
+		      \vspace{1ex}
+
+		\item
+		      \textbf{Block Correlation: } \( q_i := X^\top D_i (\hat y - y) - (2D_i - I)^\top \ri \).
+		      \pause
+		      \vspace{1ex}
+
+		\item
+		      \textbf{Support Set: }      \( \calS_\lambda
+		      = \cbr{\bi \in [2p] : \exists \theta \in \solfn(\lambda), \
+			      \theta_i \neq 0} \).
+	\end{itemize}
+
+	\vspace{-2ex}
+	\pause
+	\horizontalrule
+	\vspace{-1ex}
+
+	\begin{proposition}[Informal]
+		Fix \( \lambda > 0 \).
+		The optimal set of the C-ReLU problem is
+		given by
+		\begin{equation*}
+			\begin{aligned}
+				\solfn(\lambda) =
+				\big\{ & \theta  :
+				\forall \, \bi  \in  \calS_\lambda,
+				\theta_i =  \alpha_\bi q_i, \alpha_\bi \geq 0, \,             \\
+				       & \quad \forall \, j \in [2p] \setminus \calS_\lambda,
+				\theta_{j} = 0, \, \sum_{i=1}^{2p} D_i X \theta_i = \hat y
+				\big\}
+			\end{aligned}
+		\end{equation*}
+	\end{proposition}
+
+\end{frame}
+
+\begin{frame}{Proof Roadmap}
+
+	{
+		\large
+		{\Large
+			\textbf{Proof Roadmap}:
+		}
+		\vspace{2em}
+		\begin{enumerate}
+			\large
+			\item Characterize solutions to the \good{convex reformulation}
+			      using strong duality and KKT conditions.
+			      \vspace{1ex}
+			\item \textbf{Extend results to \bad{non-convex} ReLU networks
+				      using the solution mapping.}
+			      \vspace{1ex}
+			\item Leverage explicit characterization of the optimal
+			      set for \good{new insights and algorithms}.
+		\end{enumerate}
+	}
+
+\end{frame}
+
+
+\begin{frame}{C-ReLU: Mapping back to Non-Convex Networks}
+
+	{\raggedright
+		\large
+		2. Extend results to \bad{non-convex} ReLU networks
+		using the solution mapping.
+		\vspace{1ex}
+		\pause
+	}
+
+	\horizontalrule
+
+	\begin{theorem}[Informal]
+		Suppose \( m \geq m^* \).
+		Then the optimal set for NC-ReLU up to
+		\bad{permutation/split symmetries} is
+		\vspace{-1ex}
+		\begin{equation*}
+			\begin{aligned}
+				\hspace{-0.5em} \calO_\lambda  = \,
+				\big\{
+				 & (W_1,  w_2) :
+				\, f_{W_1, w_2}(X)  =  \hat y,                       \\
+				 & \forall \, \bi  \in  \calS_\lambda,
+				W_{1i} = (\sfrac{\alpha_{i}}{\lambda})^{\sfrac{1}{2}} q_i,
+				w_{2i} = (\alpha_i \lambda)^{\sfrac{1}{2}},
+				\alpha_i \geq 0                                      \\
+				 & \forall \, \bi  \in [2p] \setminus \calS_\lambda,
+				W_{1i} = 0, \, w_{2i} = 0
+				\big\}.
+			\end{aligned}
+		\end{equation*}
+	\end{theorem}
+
+	\pause
+
+	We've derived the \good{optimal set} of the ReLU training problem!
+
+\end{frame}
+
+\begin{frame}{C-ReLU: Appearance of Solution Sets}
+	\begin{figure}[]
+		\centering
+		\includegraphics[width=0.96\textwidth]{assets/solution_sets_vis_270.png}
+	\end{figure}
+
+	\begin{itemize}
+		\item The non-convex parameterization maps the \good{convex polytope} of
+		      solutions into a \bad{curved manifold}.
+	\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Proof Roadmap}
+
+	\textbf{\Large Proof Roadmap}:
+	\vspace{2em}
+
+	\begin{enumerate}
+		\large
+		\item Characterize solutions to the \good{convex reformulation}
+		      using strong duality and KKT conditions.
+		      \vspace{1ex}
+
+		\item Extend results to \bad{non-convex} ReLU networks
+		      using the solution mapping.
+		      \vspace{1ex}
+
+		\item \textbf{Leverage explicit characterization of the optimal
+			      set for \good{new insights and algorithms}.}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Optimal Pruning: Extreme Points}
+
+	{\raggedright
+		\large
+		3. Leverage explicit characterization of the optimal
+		set for \good{new insights and algorithms}.
+		\pause
+	}
+
+	\horizontalrule
+	\begin{enumerate}
+		\item
+		      Stack the \( q_i \) vectors into a matrix \( Q =
+		      \begin{bmatrix}
+			      \vert &        & \vert  \\
+			      q_1   & \cdots & q_{2p} \\
+			      \vert &        & \vert  \\
+		      \end{bmatrix}.
+		      \)
+
+		      \pause
+		\item
+		      The C-ReLU Optimal Set in \( \alpha \) space is then,
+		      \begin{equation}
+			      \begin{aligned}
+				      \solfn(\lambda) & =
+				      Q_{\calS_\lambda} \big\{ \alpha  : \sum_{i \in \calS_\lambda} (D_i X q_i) \alpha_i = \hat y,
+				      \alpha_i \geq 0
+				      \big\}                                                       \\
+				                      & = Q_{\calS_\lambda} \calP_{\calS_\lambda}.
+			      \end{aligned}
+		      \end{equation}
+
+		      \pause
+
+		\item \( \calP_{\calS_\lambda} \) is a polytope.
+		      \pause
+
+		\item \( \bar \alpha \in \calP_{\calS_\lambda} \) is a vertex
+		      iff \( \cbr{D_i X q_i}_{\bar \alpha_i \neq 0} \) are linearly independent.
+	\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Optimal Pruning: Algorithm}
+	\textbf{Definition}: A optimal C-ReLU model \( \theta \) is minimal
+	if there does
+	not exist another optimal model \( \theta' \) with strictly smaller support.
+
+	\vspace{3ex}
+	\pause
+
+	\begin{beamercolorbox}[wd=\textwidth,sep=1em]{result}
+		\textbf{Proposition 3.2} (informal):
+		For \( \lambda > 0 \), \( \theta \in \solfn(\lambda) \) is \good{minimal}
+		iff
+		the vectors \( \cbr{D_i X q_i}_{\alpha_i \neq 0} \)
+		are linearly independent.
+	\end{beamercolorbox}
+
+	\vspace{3ex}
+	\pause
+
+	\textbf{We prove}:
+	\begin{itemize}
+		\item Vertices of \( \solfn(\lambda) \) are minimal models.
+		      \pause
+		\item There are at most \( n \) neurons in a minimal model.
+		      \pause
+		\item Pruning from any optimal model will give a minimal model.
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Optimal Pruning: Pseudo-code}
+	\begin{algorithm}[H]
+		\caption{Pruning solutions}
+		\begin{algorithmic}
+			\STATE {\bfseries Input:} data matrix \( X \), solution \( \theta \).
+			\STATE \( k \gets 0 \).
+			\STATE \( \theta^k \gets \theta \).
+			\WHILE {\( \exists \beta \neq 0 \) s.t. \( \sum_{\bi \in \act(\theta^k)} \beta_\bi D_i X \theta_i^k = 0 \)}
+			\STATE \( \bi^k \gets \argmax_{\bi} \cbr{|\beta_\bi| : \bi \in \act(\theta^k)}  \)
+			\STATE \( t^k \gets 1/|\beta_{\bi^k}| \)
+			\STATE \( \theta^{k+1} \gets \theta^k (1 - t^k \beta_\bi) \)
+			\STATE \( k \gets k + 1 \)
+			\ENDWHILE
+			\STATE {\bfseries Output:} final weights \( \theta^k \)
+		\end{algorithmic}
+	\end{algorithm}
+
+	\pause
+
+	Let \( r = \text{rank}(X) \). Complexity to compute a minimal model:
+
+	\[ O\rbr{d^3 r^3 (\frac{n}{r})^{3r} + \good{(n^3 + nd) r (\frac{n}{r})^r}}. \]
+
+\end{frame}
+
+\setbeamercolor{background canvas}{bg=LightCyan}
+
+\begin{frame}{}
+	\begin{center}
+		\huge V. Experimental Results
+	\end{center}
+\end{frame}
+\setbeamercolor{background canvas}{bg=white}
+
+\begin{frame}{Algorithms: Exploring the Optimal Set}
+
+	\begin{figure}[t]
+		\centering
+		\includegraphics[width=0.48\linewidth]{assets/dist_paper_monks-1.pdf}
+		\includegraphics[width=0.48\linewidth]{assets/dist_paper_planning.pdf}
+	\end{figure}
+	\begin{itemize}
+		\item Take 10,000 samples from the set of optimal neural networks.
+		\item All samples have (i) \textbf{same training accuracy},
+		      (ii)~\textbf{same model norm}, but generalize very differently.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Algorithms: (Sub)-Optimal Pruning}
+	\begin{figure}[t]
+		\centering
+		\includegraphics[width=0.75\textwidth]{assets/uci_pruning_full_paper.pdf}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Algorithms: (Sub)-Optimal Pruning}
+	\begin{figure}[t]
+		\centering
+		\includegraphics[width=0.75\textwidth]{assets/prune_cifar.pdf}
+	\end{figure}
+\end{frame}
+
+\setbeamercolor{background canvas}{bg=LightCyan}
+
+\begin{frame}{}
+	\begin{center}
+		\huge Pause.
+	\end{center}
+\end{frame}
+\setbeamercolor{background canvas}{bg=white}
+
+\begin{frame}{Recap}
+	\begin{center}
+		\huge   Our Contributions.
+	\end{center}
+
+	\vspace{2em}
+	\pause
+	{ \large
+		\begin{itemize}
+			\item We approximate the ReLU training problem by \textbf{unconstrained}
+			      convex optimization of a Gated ReLU network.\pause
+			      \vspace{0.5em}
+
+			\item We leverage convex reformulations to \textbf{analyze} the set
+			      of optimal ReLU networks.
+			      \pause
+			      \vspace{0.5em}
+
+			\item We propose and \textbf{exhaustively evaluate} algorithms for solving
+			      convex reformulations.
+		\end{itemize}
+	}
+
+\end{frame}
+
+
+%% main content ends %%
+
+%% end slide
+\setbeamercolor{background canvas}{bg=LightCyan}
+
+\begin{frame}{}
+	\begin{center}
+		\huge Try our Code!
+	\end{center}
+
+	\begin{figure}[]
+		\centering
+		\includegraphics[width=0.6\textwidth]{assets/github.png}
+	\end{figure}
+\end{frame}
+\setbeamercolor{background canvas}{bg=white}
+
+%% bibliography
+\begin{frame}[allowframebreaks]{References}
+	\printbibliography[]
+\end{frame}
 
 
 %\begin{frame}{Bonus: Cone Decomposition Proof Sketch}
@@ -1729,5 +1645,83 @@
 %    where \( m \leq n \) and \( h_j(x) = \rbr{\abr{x, w_j}}_+ \).
 %\end{frame}
 
+\begin{frame}{Bonus: Explicit Optimal Set}
+	We gave a characterization of \( \solfn(\lambda) \) that depends on
+	\[
+		\calS_\lambda
+		= \cbr{\bi \in [2p] : \exists \theta \in \solfn(\lambda), \
+			\theta_i \neq 0}.
+	\]
+
+	Alternative expression involves additional linear constraints.
+
+	\pause
+	\horizontalrule
+
+	\begin{equation*}
+		\begin{aligned}
+			\solfn(\lambda) =
+			\big\{ & \theta  :
+			\forall \, \bi  \in  \equi,
+			\theta_i =  \alpha_\bi q_i, \alpha_\bi \geq 0, \,           \\
+			       & \quad \forall \, j \in [2p] \setminus \equi,
+			\theta_{j} = 0, \, \sum_{i=1}^{2p} D_i X \theta_i = \hat y, \\
+			       & \quad \forall \, i \in [2p],
+			\tilde X_i \theta_i \geq 0, \abr{\rho, \tilde X_i \theta_i } = 0.
+			\big\}
+		\end{aligned}
+	\end{equation*}
+
+	\pause
+
+	More complex, but also \textbf{explicit}.
+
+\end{frame}
+
+\begin{frame}{Bonus: Solution Mapping for C-ReLU}
+
+	Given \( \rbr{v^*, w^*} \), an optimal non-convex ReLU network is given by
+
+	\begin{equation*}
+		\textbf{C to NC:} \quad \quad
+		\begin{aligned}
+			W_{1i} & = v_i^*/ \sqrt{\norm{v_i^*}}, \quad w_{2i} = \sqrt{\norm{v_i^*}}
+			\\
+			W_{1j} & = w_i^*/ \sqrt{\norm{w_i^*}}, \quad w_{2j} = -\sqrt{\norm{w_i^*}}.
+		\end{aligned}
+	\end{equation*}
+
+	\pause
+	\vspace{3ex}
+	\begin{itemize}
+		\item Optimal convex weights satisfy \( v_i^* = \alpha_i q_i \)
+		      so that
+		      \[
+			      \norm{v_i^*}_2 = \alpha_i \norm{q_i}_2 = \alpha_i \lambda.
+		      \]
+	\end{itemize}
+
+	\pause
+	\horizontalrule
+
+	Recall structure of \textbf{non-convex optima}:
+
+	\begin{equation*}
+		\begin{aligned}
+			\hspace{-0.5em} \calO_\lambda  = \,
+			\big\{
+			 & (W_1,  w_2) :
+			\, f_{W_1, w_2}(X)  =  \hat y,                       \\
+			 & \forall \, \bi  \in  \calS_\lambda,
+			W_{1i} = (\sfrac{\alpha_{i}}{\lambda})^{\sfrac{1}{2}} q_i,
+			w_{2i} = (\alpha_i \lambda)^{\sfrac{1}{2}},
+			\alpha_i \geq 0                                      \\
+			 & \forall \, \bi  \in [2p] \setminus \calS_\lambda,
+			W_{1i} = 0, \, w_{2i} = 0
+			\big\}.
+		\end{aligned}
+	\end{equation*}
+
+\end{frame}
 
 \end{document}
