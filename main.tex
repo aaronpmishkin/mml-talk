@@ -141,8 +141,8 @@
 
 		      \pause
 
-		\item \textbf{Unintuitive Phenomena}: surprising things happen even
-		      with toy neural networks\ldots
+		\item \textbf{Unintuitive Phenomena}: Surprising things happen even
+		      with toy neural networks!
 
 	\end{itemize}
 
@@ -167,7 +167,7 @@
 \end{frame}
 
 \begin{frame}{Example: Discontinuous Paths}
-	Consider training a toy neural network:
+	Consider training a toy ReLU network:
 	\[
 		\min_{w_1} \, \half ((w_1 x_1)_+ - y_1)^2 + \half ((w_1 x_2)_+ - y_2)^2 + \lambda |w_1|.
 	\]
@@ -542,7 +542,7 @@
 			\calL(\theta, \rho)
 			 & = \half \norm{\sum_{i=1}^{2p} D_i X \theta_i - y}_2^2
 			+ \lambda\sum_{i=1}^{2p}\norm{\theta_i}_2
-			- \sum_{i=1}^{2p} \abr{K_i^\top \rho, \theta_i},
+			- \sum_{i=1}^{2p} \abr{K_i^\top \rho_i, \theta_i},
 		\end{aligned}
 	\end{equation*}
 	where \( K_{i} = (2D_i - I) X \).
@@ -556,7 +556,7 @@
 	\begin{itemize}
 		\item Define the \textbf{optimal model fit}: \( \hat y = \sum_{i=1}^{2p} D_i X \theta_i  \).
 		      \pause
-		\item Stationarity of the Lagrangian:
+		\item The Lagrangian is stationary when,
 		      \[
 			      \underbrace{X^\top D_i (\hat y - y) + K_i^\top \ri}_{q_i}
 			      \in \bad{\partial \lambda \norm{\theta_i}_2}.
@@ -582,9 +582,10 @@
 	\begin{itemize}
 		\item Suppose \( \good{\theta_i \neq 0} \).
 		      \pause
-		\item Then \(  \nabla_\theta \lambda \norm{\theta_i}_2
-		      = \lambda \frac{\theta_i}{\norm{\theta_i}_2} \) and
-		\item There exists some \( \alpha_\bi > 0 \) for which,
+		\item Then
+		      \(  \nabla_\theta \lambda \norm{\theta_i}_2
+		      = \lambda \frac{\theta_i}{\norm{\theta_i}_2} \)
+		      and there exists \( \alpha_\bi > 0 \) for which,
 		      \[
 			      q_i = \lambda \frac{\theta_i}{\norm{\theta_i}_2}
 			      \implies \theta_i = \good{\alpha_\bi} q_i.
@@ -677,7 +678,7 @@
 	We need to do some accounting for \bad{model symmetries}:
 	\pause
 	\begin{itemize}
-		\item \textbf{Permutations}: Re-ordering neurons (i.e. permutations).
+		\item \textbf{Permutations}: Re-ordering neurons inside the layers.
 		      \pause
 
 		\item \textbf{Splits}: Splitting a neuron into two collinear neurons.
@@ -697,8 +698,8 @@
 				 & (W_1,  w_2) :
 				\, f_{W_1, w_2}(X)  =  \hat y,                       \\
 				 & \forall \, \bi  \in  \calS_\lambda,
-				W_{1i} = (\sfrac{\alpha_{i}}{\lambda})^{\sfrac{1}{2}} q_i,
-				w_{2i} = (\alpha_i \lambda)^{\sfrac{1}{2}},
+				\good{W_{1i} = (\sfrac{\alpha_{i}}{\lambda})^{\sfrac{1}{2}} q_i},
+				\good{w_{2i} = (\alpha_i \lambda)^{\sfrac{1}{2}}},
 				\alpha_i \geq 0                                      \\
 				 & \forall \, \bi  \in [2p] \setminus \calS_\lambda,
 				W_{1i} = 0, \, w_{2i} = 0
@@ -725,17 +726,19 @@
 
 
 \begin{frame}{Exploring the Optimal Set}
+	\begin{itemize}
+		\item Take 10,000 samples from the set of optimal neural networks.
+		      \pause
+		\item All samples have (i) \textbf{same training accuracy},
+		      (ii)~\textbf{same model norm}, but can generalize differently.
+		      \pause
+	\end{itemize}
 
 	\begin{figure}[t]
 		\centering
 		\includegraphics[width=0.48\linewidth]{assets/dist_paper_monks-1.pdf}
 		\includegraphics[width=0.48\linewidth]{assets/dist_paper_planning.pdf}
 	\end{figure}
-	\begin{itemize}
-		\item Take 10,000 samples from the set of optimal neural networks.
-		\item All samples have (i) \textbf{same training accuracy},
-		      (ii)~\textbf{same model norm}, but generalize very differently.
-	\end{itemize}
 \end{frame}
 
 
@@ -797,7 +800,7 @@
 			\end{equation*}
 
 			\pause
-			The C-ReLU optimal set is a \good{convex polytope}.
+			The C-ReLU optimal set is a \good{convex polytope}!
 
 		\end{column}
 		\begin{column}{0.5\textwidth}
@@ -854,7 +857,7 @@
 \begin{frame}{Optimal Pruning: Algorithm}
 	\textbf{Definition}: A optimal C-ReLU model \( \theta^* \) is minimal
 	if there does
-	not exist another optimal model \( \theta' \) with strictly smaller support.
+	not exist another optimal model \( \theta' \) with \bad{strictly smaller support}.
 
 	\vspace{3ex}
 	\pause
@@ -900,9 +903,9 @@
 
 	\pause
 
-	Let \( r = \text{rank}(X) \). Complexity to compute a minimal model:
+	Complexity to compute a minimal model starting from \( l \) neurons:
 
-	\[ O\rbr{d^3 r^3 (\frac{n}{r})^{3r} + \good{(n^3 + nd) r (\frac{n}{r})^r}}. \]
+	\[ O\rbr{n^3 l + nd}. \]
 
 \end{frame}
 
@@ -925,7 +928,7 @@
 
 \begin{frame}{}
 	\begin{center}
-		\huge Pause.
+		\huge Recap.
 	\end{center}
 \end{frame}
 \setbeamercolor{background canvas}{bg=white}
