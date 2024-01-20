@@ -4,10 +4,7 @@
 
 \begin{tikzpicture}[scale=1,
 		declare function={
-				cone_1(\x)= 10*\x;
-				cone_2(\x)= -\x;
-				cone_3(\x)= -4*\x;
-				bounds(\x)= \x - 10;
+				loss(\x)= (4*(\x - 4)^2 + 4)*(x<=4.5) + (2*(\x - 5)^2 + 4.5)*(x>4.5);
 			}
 	]
 	\begin{axis}[width=\linewidth, height=6cm,
@@ -15,6 +12,8 @@
 			ymin=-2, ymax=6, ytick={-2,...,5}, ylabel=$$, x axis line style={-},
 				xmin=-6, xmax=6, xtick={-5,...,5}, xlabel=$$, y axis line style={-},
 		]
+		\addplot[name path=loss, domain=-6:6, samples=200, line width=1pt, color=bad]{loss(x)};
+		\node[label=left:$w_1^*$, circle, fill, inner sep=1pt] at (axis cs:4,4) {};
 
 		\draw [name path=cone_1, solid, line width=1pt] (axis cs:0,-2) -- (axis cs:0,6);
 		\draw [name path=bounds, line width=0pt] (axis cs:-6,-2) -- (axis cs:-6,6);

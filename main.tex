@@ -78,7 +78,7 @@
 
 	{
 		\large \bad{Problem}: We don't understand the solution space of
-		(even shallow) ReLU networks nearly as well as that of \good{GLMs}.
+		neural networks nearly as well as that of \good{GLMs}.
 	}
 
 	\pause
@@ -149,7 +149,8 @@
 \end{frame}
 
 \begin{frame}{Example: Discontinuous Paths}
-	Consider training a toy neural network:
+	Consider training a toy neural network: given \( (x_1, y_1), (x_2, y_2) \),
+	\pause
 	\[
 		\min_{w_1} \, \half ((w_1 x_1)_+ - y_1)^2 + \half ((w_1 x_2)_+ - y_2)^2 + \lambda |w_1|.
 	\]
@@ -434,12 +435,12 @@
 \setbeamercolor{background canvas}{bg=LightCyan}
 \begin{frame}{}
 	\begin{center}
-		\huge II. Optimal Sets
+		\huge II. Optimal Sets of ReLU Networks
 	\end{center}
 \end{frame}
 \setbeamercolor{background canvas}{bg=white}
 
-\begin{frame}{Characterizing the Optimal Set}
+\begin{frame}{Characterizing the ReLU Optimal Set}
 
 	{
 		\large
@@ -514,7 +515,7 @@
 
 	\pause
 
-	\begin{itemize}
+	\begin{enumerate}
 		\item Convex objective + linear constraints \( \implies \) strong duality!
 		      \pause
 		\item Introduce dual variables \( \rho \) and analyze the KKT conditions.
@@ -528,8 +529,7 @@
 		      \end{bmatrix}
 		      \)
 		      and index \( D_i \)'s from \( 1 \) to \( 2p \).
-
-	\end{itemize}
+	\end{enumerate}
 
 \end{frame}
 
@@ -554,7 +554,7 @@
 
 	\vspace{1ex}
 	\begin{itemize}
-		\item Define the \textbf{optimal model fit}: \( \hat y = \sum_{i=1}^{2p} D_i X \theta_i  \).
+		\item Define the \textbf{optimal model fit}: \( \hat y = \sum_{i=1}^{2p} D_i X \theta_i^*  \).
 		      \pause
 		\item The Lagrangian is stationary when,
 		      \[
@@ -572,7 +572,7 @@
 	\textbf{Stationary Lagrangian}:
 	\[
 		X^\top D_i (\hat y - y) + K_i^\top \ri =:
-		\bad{q_i \in \partial \lambda \norm{\theta_i}_2}.
+		\bad{q_i \in \partial \lambda \norm{\theta_i^*}_2}.
 	\]
 
 	\pause
@@ -580,15 +580,15 @@
 
 	\textbf{Non-zero Blocks}:
 	\begin{itemize}
-		\item Suppose \( \good{\theta_i \neq 0} \).
+		\item Suppose \( \good{\theta_i^* \neq 0} \).
 		      \pause
 		\item Then
-		      \(  \nabla_\theta \lambda \norm{\theta_i}_2
-		      = \lambda \frac{\theta_i}{\norm{\theta_i}_2} \)
+		      \(  \nabla_\theta \lambda \norm{\theta_i^*}_2
+		      = \lambda \frac{\theta_i^*}{\norm{\theta_i^*}_2} \)
 		      and there exists \( \alpha_\bi > 0 \) for which,
 		      \[
-			      q_i = \lambda \frac{\theta_i}{\norm{\theta_i}_2}
-			      \implies \theta_i = \good{\alpha_\bi} q_i.
+			      q_i = \lambda \frac{\theta_i^*}{\norm{\theta_i^*}_2}
+			      \implies \theta_i^* = \good{\alpha_\bi} q_i.
 		      \]
 		      \pause
 		      \vspace{-1em}
@@ -602,7 +602,7 @@
 	\vspace{-2ex}
 	\begin{itemize}
 		\item
-		      \textbf{Optimal Fit: }       \( \hat y = \sum_{i=1}^{2p} D_i X \theta_i  \).
+		      \textbf{Optimal Fit: }       \( \hat y = \sum_{i=1}^{2p} D_i X \theta_i^*  \).
 		      \vspace{1ex}
 
 		\item
@@ -628,11 +628,11 @@
 		\begin{equation*}
 			\begin{aligned}
 				\solfn(\lambda) =
-				\big\{ & \theta  :
-				\forall \, \bi  \in  \calS_\lambda,
-				\good{\theta_i =  \alpha_\bi q_i}, \alpha_\bi \geq 0, \,      \\
+				\big\{ & \theta  : \good{\sum_{i=1}^{2p} D_i X \theta_i = \hat y} \\
+				       & \quad \forall \, \bi  \in  \calS_\lambda,
+				\good{\theta_i =  \alpha_\bi q_i}, \alpha_\bi \geq 0, \,          \\
 				       & \quad \forall \, j \in [2p] \setminus \calS_\lambda,
-				\theta_{j} = 0, \, \good{\sum_{i=1}^{2p} D_i X \theta_i = \hat y}
+				\theta_{j} = 0,
 				\big\}
 			\end{aligned}
 		\end{equation*}
@@ -854,10 +854,15 @@
 
 \end{frame}
 
-\begin{frame}{Optimal Pruning: Algorithm}
-	\textbf{Definition}: A optimal C-ReLU model \( \theta^* \) is minimal
-	if there does
-	not exist another optimal model \( \theta' \) with \bad{strictly smaller support}.
+\begin{frame}{Optimal Pruning: Minimal Models}
+	\textbf{Definition}: An optimal C-ReLU model \( \theta^* \) is minimal if
+	there does not exist another optimal model \( \theta' \) with \bad{strictly
+		smaller support}.
+
+	\begin{itemize}
+		\item Corresponds optimal networks with fewest non-zero neurons.
+	\end{itemize}
+
 
 	\vspace{3ex}
 	\pause
@@ -870,23 +875,31 @@
 		are linearly independent.
 	\end{beamercolorbox}
 
-	\vspace{3ex}
 	\pause
 
-	\textbf{We prove}:
 	\begin{itemize}
+		\item Can check independence of activations:
+		      \( (X W_{1i})_+ \propto D_i X q_i \).
+	\end{itemize}
+
+	\vspace{2ex}
+	\pause
+
+
+	\textbf{We prove}:
+	\begin{enumerate}
 		\item Vertices of \( \solfn(\lambda) \) are minimal models.
 		      \pause
 		\item There are at most \( n \) neurons in a minimal model.
 		      \pause
 		\item Pruning from any optimal model will give a minimal model.
-	\end{itemize}
+	\end{enumerate}
 
 \end{frame}
 
-\begin{frame}{Optimal Pruning: Pseudo-code}
+\begin{frame}{Optimal Pruning: Algorithm}
 	\begin{algorithm}[H]
-		\caption{Pruning solutions}
+		\caption{Compute Minimal Model}
 		\begin{algorithmic}
 			\STATE {\bfseries Input:} data matrix \( X \), solution \( \theta \).
 			\STATE \( k \gets 0 \).
@@ -902,10 +915,43 @@
 	\end{algorithm}
 
 	\pause
+	\begin{itemize}
+		\item Computing a \bad{minimal model} is the same as \good{optimal pruning}!
+		      \pause
+		\item Pruning complexity: \( O\rbr{n^3 l + nd} \) starting from \( l \) neurons.
+	\end{itemize}
 
-	Complexity to compute a minimal model starting from \( l \) neurons:
+\end{frame}
 
-	\[ O\rbr{n^3 l + nd}. \]
+\begin{frame}{Pruning in Practice}
+
+	\textbf{Optimal Pruning in Theory:}
+	\begin{itemize}
+		\item Starts from any neural network and returns a minimal model
+		      with the same \good{predictions} and \good{weight-norm}.
+		      \pause
+
+		\item But it can't prune past \bad{minimal models}\ldots
+	\end{itemize}
+
+	\vspace{2em}
+	\pause
+
+	\textbf{Optimal Pruning in Practice}:
+	\begin{itemize}
+		\item We propose a \good{simple heuristic} based on least-squares to prune
+		      past minimal models.
+
+		\item Our heuristic works with \good{any neuron pruning rule}.
+	\end{itemize}
+
+	\vspace{1em}
+	\pause
+
+	\begin{center}
+		\Large
+		Let's see how this does on real data!
+	\end{center}
 
 \end{frame}
 
