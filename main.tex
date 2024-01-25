@@ -440,7 +440,7 @@
 \end{frame}
 \setbeamercolor{background canvas}{bg=white}
 
-\begin{frame}{Characterizing the ReLU Optimal Set}
+\begin{frame}{Optimal Set: Roadmap}
 
 	{
 		\large
@@ -467,7 +467,7 @@
 
 \end{frame}
 
-\begin{frame}{Characterizing the Optimal Set}
+\begin{frame}{Optimal Set: Roadmap}
 
 	{
 		\large
@@ -490,7 +490,7 @@
 
 \end{frame}
 
-\begin{frame}{C-ReLU Optimal Set}
+\begin{frame}{C-ReLU: Strong Duality}
 
 	{\raggedright
 		\large
@@ -516,7 +516,7 @@
 	\pause
 
 	\begin{enumerate}
-		\item Convex objective + linear constraints \( \implies \) strong duality!
+		\item Convex objective + linear constraints \( \implies \) \good{strong duality}!
 		      \pause
 		\item Introduce dual variables \( \rho \) and analyze the KKT conditions.
 		      \pause
@@ -533,7 +533,7 @@
 
 \end{frame}
 
-\begin{frame}{C-ReLU Optimality Conditions}
+\begin{frame}{C-ReLU: Optimality Conditions}
 
 	We form the Lagrangian for the convex reformulation:
 
@@ -567,7 +567,7 @@
 
 \end{frame}
 
-\begin{frame}{Characterizing the Optimal Set}
+\begin{frame}{C-ReLU: Implications of Stationarity}
 
 	\textbf{Stationary Lagrangian}:
 	\[
@@ -637,7 +637,6 @@
 			\end{aligned}
 		\end{equation*}
 	\end{proposition}
-
 \end{frame}
 
 \begin{frame}{Returning to our Roadmap}
@@ -665,7 +664,7 @@
 \end{frame}
 
 
-\begin{frame}{C-ReLU: Mapping back to Non-Convex Networks}
+\begin{frame}{NC-ReLU: Using the Solution Mapping}
 
 	{\raggedright
 		\large
@@ -710,7 +709,46 @@
 
 \end{frame}
 
-\begin{frame}{C-ReLU: Appearance of Solution Sets}
+
+\begin{frame}{NC-ReLU: Surprises from the Optimal Set}
+
+	\begin{theorem}[Informal]
+		Suppose \( m \geq m^* \).
+		Then the optimal set for NC-ReLU up to
+		\bad{permutation/split symmetries} is
+		\vspace{-1ex}
+		\begin{equation*}
+			\begin{aligned}
+				\hspace{-0.5em} \calO_\lambda  = \,
+				\big\{
+				 & (W_1,  w_2) :
+				\, f_{W_1, w_2}(X)  =  \hat y,                       \\
+				 & \forall \, \bi  \in  \calS_\lambda,
+				\good{W_{1i} = (\sfrac{\alpha_{i}}{\lambda})^{\sfrac{1}{2}} q_i},
+				\good{w_{2i} = (\alpha_i \lambda)^{\sfrac{1}{2}}},
+				\alpha_i \geq 0                                      \\
+				 & \forall \, \bi  \in [2p] \setminus \calS_\lambda,
+				W_{1i} = 0, \, w_{2i} = 0
+				\big\}.
+			\end{aligned}
+		\end{equation*}
+	\end{theorem}
+
+	\pause
+	Surprising Properties of the Optimal Set:
+	\begin{itemize}
+		\item Given the ordering induced by \( D_i \), every optimal neuron
+		      \( W_{1i}^* \) is \good{positively collinear}!
+		      \pause
+
+		\item Up to permutation/split symmetries the optimal set is
+		      \good{connected}!
+	\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{NC-ReLU: Appearance of Solution Sets}
 	\begin{figure}[]
 		\centering
 		\includegraphics[width=0.96\textwidth]{assets/solution_sets_vis_270.png}
@@ -725,7 +763,7 @@
 \end{frame}
 
 
-\begin{frame}{Exploring the Optimal Set}
+\begin{frame}{NC-ReLU: Exploring the Optimal Set}
 	\begin{itemize}
 		\item Take 10,000 samples from the set of optimal neural networks.
 		      \pause
@@ -739,6 +777,12 @@
 		\includegraphics[width=0.48\linewidth]{assets/dist_paper_monks-1.pdf}
 		\includegraphics[width=0.48\linewidth]{assets/dist_paper_planning.pdf}
 	\end{figure}
+
+	\pause
+	\begin{center}
+        \good{Implicit regularization} is critical to generalization.
+	\end{center}
+
 \end{frame}
 
 
@@ -746,13 +790,13 @@
 
 \begin{frame}{}
 	\begin{center}
-		\huge III. Pruning
+		\huge III. Optimal Pruning
 	\end{center}
 \end{frame}
 \setbeamercolor{background canvas}{bg=white}
 
 
-\begin{frame}{Leveraging our Characterization}
+\begin{frame}{Optimal Pruning: the Final Step}
 
 	{\Large Proof Roadmap:}
 	\vspace{2em}
@@ -773,7 +817,7 @@
 	\end{enumerate}
 \end{frame}
 
-\begin{frame}{Optimal Pruning: Polytope of Solutions}
+\begin{frame}{Optimal Pruning: the Polytope of Solutions}
 
 	{\raggedright
 		\large
@@ -859,8 +903,9 @@
 	there does not exist another optimal model \( \theta' \) with \bad{strictly
 		smaller support}.
 
+	\pause
 	\begin{itemize}
-		\item Corresponds optimal networks with fewest non-zero neurons.
+		\item \bad{NC-ReLU}: minimal \( \iff \) \good{sparsest} (neuron-wise) model.
 	\end{itemize}
 
 
@@ -878,21 +923,21 @@
 	\pause
 
 	\begin{itemize}
-		\item Can check independence of activations:
-		      \( (X W_{1i})_+ \propto D_i X q_i \).
+		\item \bad{NC-ReLU}: minimal if \( (X W_{1i})_+ \) are linearly independent.
 	\end{itemize}
 
-	\vspace{2ex}
+	\vspace{1ex}
 	\pause
 
 
-	\textbf{We prove}:
+	\textbf{Our Results}:
 	\begin{enumerate}
-		\item Vertices of \( \solfn(\lambda) \) are minimal models.
+		\item We prove vertices of \( \solfn(\lambda) \) are minimal models.
 		      \pause
 		\item There are at most \( n \) neurons in a minimal model.
 		      \pause
-		\item Pruning from any optimal model will give a minimal model.
+		\item We give a poly-time algorithm for computing minimal models
+		      starting from any model \( \theta \).
 	\end{enumerate}
 
 \end{frame}
@@ -916,22 +961,22 @@
 
 	\pause
 	\begin{itemize}
-		\item Computing a \bad{minimal model} is the same as \good{optimal pruning}!
+		\item \bad{NC-ReLU}: Returns \good{sparsest network} that is still optimal!
 		      \pause
-		\item Pruning complexity: \( O\rbr{n^3 l + nd} \) starting from \( l \) neurons.
+          \item Complexity: \( O\rbr{n^3 l + nd} \) starting from \( l \) neurons.
 	\end{itemize}
 
 \end{frame}
 
-\begin{frame}{Pruning in Practice}
+\begin{frame}{Optimal Pruning: Theory vs Practice}
 
 	\textbf{Optimal Pruning in Theory:}
 	\begin{itemize}
-		\item Starts from any neural network and returns a minimal model
+		\item Starts from any neural network and returns a \good{neuron-sparse} model
 		      with the same \good{predictions} and \good{weight-norm}.
 		      \pause
 
-		\item But it can't prune past \bad{minimal models}\ldots
+		\item But it can't prune past minimum width: \bad{\( m^* \leq n \)}\ldots
 	\end{itemize}
 
 	\vspace{2em}
@@ -941,6 +986,7 @@
 	\begin{itemize}
 		\item We propose a \good{simple heuristic} based on least-squares to prune
 		      past minimal models.
+		      \pause
 
 		\item Our heuristic works with \good{any neuron pruning rule}.
 	\end{itemize}
@@ -956,25 +1002,29 @@
 \end{frame}
 
 
-\begin{frame}{(Sub)-Optimal Pruning on UCI}
+\begin{frame}{(Sub)-Optimal Pruning: UCI Datasets}
 	\begin{figure}[t]
 		\centering
 		\includegraphics[width=0.75\textwidth]{assets/uci_pruning_full_paper.pdf}
 	\end{figure}
 \end{frame}
 
-\begin{frame}{(Sub)-Optimal Pruning on CIFAR-10}
+\begin{frame}{(Sub)-Optimal Pruning: CIFAR-10}
 	\begin{figure}[t]
 		\centering
-		\includegraphics[width=0.75\textwidth]{assets/prune_cifar.pdf}
+		\includegraphics[width=0.65\textwidth]{assets/prune_cifar.pdf}
 	\end{figure}
+	\pause
+	\begin{center}
+		(Sub)-optimal pruning \good{dominates} the naive baselines!
+	\end{center}
 \end{frame}
 
 \setbeamercolor{background canvas}{bg=LightCyan}
 
 \begin{frame}{}
 	\begin{center}
-		\huge Recap.
+		\huge Summary
 	\end{center}
 \end{frame}
 \setbeamercolor{background canvas}{bg=white}
